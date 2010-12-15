@@ -1,0 +1,16 @@
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.[Uu]ser
+*.suo
+_ReSharper.*
+*.sln.cache
+*.xap
+*.vspcc
+*.vscc
+*.vssscc
+*.ncb
+*vwd.webinfo
+*.svn/
+*.swp
