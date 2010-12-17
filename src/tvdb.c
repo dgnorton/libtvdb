@@ -92,7 +92,33 @@ size_t write_buf_cb(void *ptr, size_t size, size_t nmemb, void *data)
    return realsize;
 }
 
-CURLcode get_url(CURL *curl, const char *url, tvdb_buffer_t *buf) {
+size_t write_file_cb(void* ptr, size_t size, size_t nmemb, file_fetcher* ffetch) {
+   ffetch->m_hf->Put((const byte*)ptr, size* nmemb);
+   size_t written = fwrite(ptr, size, nmemb, ffetch->m_fp);
+   return written;
+}
+
+CURLcode get_XML(CURL *curl, const char *url, tvdb_buffer_t *buf) {
+   CURLcode cc;
+
+   if ((cc = curl_easy_setopt(curl, CURLOPT_URL, url)) != CURLE_OK)
+      return cc;
+
+   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_buf_cb)) != CURLE_OK)
+      return cc;
+
+   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEDATA, buf)) != CURLE_OK)
+      return cc;
+
+   if ((cc = curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0")) != CURLE_OK)
+      return cc;
+
+   cc = curl_easy_perform(curl);
+
+   return cc;
+}
+
+CURLcode get_file(CURL *curl, const char *url, const char *file) {
    CURLcode cc;
 
    if ((cc = curl_easy_setopt(curl, CURLOPT_URL, url)) != CURLE_OK)
@@ -126,7 +152,7 @@ TVDB_API int tvdb_mirrors(htvdb_t htvdb, tvdb_buffer_t *buf)  {
 
    sprintf(url, "http://www.thetvdb.com/api/%s/mirrors.xml", tvdb->key);
 
-   if ((cc = get_url(tvdb->curl, url, buf)) != CURLE_OK)
+   if ((cc = get_XML(tvdb->curl, url, buf)) != CURLE_OK)
       return TVDB_E_CURL;
 
    return TVDB_OK;
@@ -144,7 +170,7 @@ TVDB_API int tvdb_time(htvdb_t htvdb, tvdb_buffer_t *buf) {
 
    sprintf(url, "http://www.thetvdb.com/api/Updates.php?type=none");
 
-   if ((cc = get_url(tvdb->curl, url, buf)) != CURLE_OK)
+   if ((cc = get_XML(tvdb->curl, url, buf)) != CURLE_OK)
       return TVDB_E_CURL;
 
    return TVDB_OK;
@@ -162,13 +188,27 @@ TVDB_API int tvdb_series(htvdb_t htvdb, const char *name, tvdb_buffer_t *buf) {
 
    sprintf(url, "http://www.thetvdb.com/api/GetSeries.php?seriesname=%s", name);
 
-   if ((cc = get_url(tvdb->curl, url, buf)) != CURLE_OK)
+   if ((cc = get_XML(tvdb->curl, url, buf)) != CURLE_OK)
       return TVDB_E_CURL;
 
    return TVDB_OK;
 }
 
-TVDB_API int tvdb_series_info(htvdb_t htvdb, int series_id, const char *lang, const char *outfile) {
+TVDB_API int tvdb_series_info(htvdb_t htvdb, const char *mirror, int series_id, const char *lang, const char *outfile) {
+   tvdb_context_t *tvdb;
+   URL url;
+   CURLcode cc;
+
+   if (htvdb <= 0)
+      return TVDB_E_INVALID_HANDLE;
+
+   tvdb = (tvdb_context_t *)htvdb;
+
+   sprintf(url, "http://www.thetvdb.com/api/GetSeries.php?seriesname=%s", name);
+
+   if ((cc = get_file(tvdb->curl, url, buf)) != CURLE_OK)
+      return TVDB_E_CURL;
+
    return TVDB_OK;
 }
 
