@@ -66,5 +66,8 @@ int main() {
    print_series(series);
    tvdb_free_buffer(series_xml);
 
+   /* get series info (episodes, etc.) for the first series found above */
+   tvdb_series_info(tvdb, ((tvdb_mirror_t*)mirrors->data)->path, ((tvdb_series_t*)series->data)->id, "en", "series_info.zip");
+
    tvdb_uninit(tvdb);
 }

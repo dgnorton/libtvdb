@@ -6,6 +6,7 @@
 #define TVDB_E_MEMORY            -2
 #define TVDB_E_INVALID_HANDLE    -3
 #define TVDB_E_INVALID_KEY       -4
+#define TVDB_E_FILE_OPEN         -5
 #define TVDB_E_CURL_GLOBAL_INIT  -100
 #define TVDB_E_CURL_EASY_INIT    -101
 #define TVDB_E_CURL              -102

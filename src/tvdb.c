@@ -92,10 +92,8 @@ size_t write_buf_cb(void *ptr, size_t size, size_t nmemb, void *data)
    return realsize;
 }
 
-size_t write_file_cb(void* ptr, size_t size, size_t nmemb, file_fetcher* ffetch) {
-   ffetch->m_hf->Put((const byte*)ptr, size* nmemb);
-   size_t written = fwrite(ptr, size, nmemb, ffetch->m_fp);
-   return written;
+size_t write_file_cb(void *ptr, size_t size, size_t nmemb, void *stream) {
+   return fwrite(ptr, size, nmemb, (FILE*)stream);;
 }
 
 CURLcode get_XML(CURL *curl, const char *url, tvdb_buffer_t *buf) {
@@ -118,16 +116,16 @@ CURLcode get_XML(CURL *curl, const char *url, tvdb_buffer_t *buf) {
    return cc;
 }
 
-CURLcode get_file(CURL *curl, const char *url, const char *file) {
+CURLcode get_file(CURL *curl, const char *url, FILE *stream) {
    CURLcode cc;
 
    if ((cc = curl_easy_setopt(curl, CURLOPT_URL, url)) != CURLE_OK)
       return cc;
 
-   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_buf_cb)) != CURLE_OK)
+   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_file_cb)) != CURLE_OK)
       return cc;
 
-   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEDATA, buf)) != CURLE_OK)
+   if ((cc = curl_easy_setopt(curl, CURLOPT_WRITEDATA, stream)) != CURLE_OK)
       return cc;
 
    if ((cc = curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcurl-agent/1.0")) != CURLE_OK)
@@ -198,18 +196,27 @@ TVDB_API int tvdb_series_info(htvdb_t htvdb, const char *mirror, int series_id, 
    tvdb_context_t *tvdb;
    URL url;
    CURLcode cc;
+   FILE *stream;
+   int result = TVDB_OK;
 
    if (htvdb <= 0)
       return TVDB_E_INVALID_HANDLE;
 
+   stream = fopen(outfile, "wb");
+
+   if (!stream)
+      return TVDB_E_FILE_OPEN;
+
    tvdb = (tvdb_context_t *)htvdb;
 
-   sprintf(url, "http://www.thetvdb.com/api/GetSeries.php?seriesname=%s", name);
+   sprintf(url, "%s/api/%s/series/%i/all/%s.zip", mirror, tvdb->key, series_id, lang);
 
-   if ((cc = get_file(tvdb->curl, url, buf)) != CURLE_OK)
-      return TVDB_E_CURL;
+   if ((cc = get_file(tvdb->curl, url, stream)) != CURLE_OK)
+      result = TVDB_E_CURL;
 
-   return TVDB_OK;
+   fclose(stream);
+
+   return result;
 }
 
 TVDB_API const char* tvdb_error_text(int err) {
@@ -222,6 +229,8 @@ TVDB_API const char* tvdb_error_text(int err) {
          return "TVDB_E_INVALID_HANDLE";
       case TVDB_E_INVALID_KEY:
          return "TVDB_E_INVALID_KEY";
+      case TVDB_E_FILE_OPEN:
+         return "TVDB_E_FILE_OPEN";
       case TVDB_E_CURL_GLOBAL_INIT:
          return "TVDB_E_CURL_GLOBAL_INIT";
       case TVDB_E_CURL_EASY_INIT:
