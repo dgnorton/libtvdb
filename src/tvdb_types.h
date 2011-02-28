@@ -1,6 +1,11 @@
 #ifndef TVDB_TYPES_H_INCLUDED
 #define TVDB_TYPES_H_INCLUDED
 
+#define TVDB_TNY_STR_SZ 16
+#define TVDB_SML_STR_SZ 128
+#define TVDB_MED_STR_SZ 1024
+#define TVDB_LRG_STR_SZ 4096
+
 /** \brief tvdb context handle
  */
 typedef long htvdb_t;
@@ -24,7 +29,7 @@ void tvdb_free_buffer(tvdb_buffer_t *);
  */
 typedef struct tvdb_mirror {
    int   id;
-   char  path[1024];
+   char  path[TVDB_MED_STR_SZ + 1];
    int   type;
 } tvdb_mirror_t;
 
@@ -34,7 +39,7 @@ tvdb_mirror_t *tvdb_alloc_mirror();
 
 /** \brief Time from the TVDB server
  */
-typedef char tvdb_time_t[16];
+typedef char tvdb_time_t[TVDB_TNY_STR_SZ + 1];
 
 /** \brief Allocates a tvdb_time_t struct and zeros it
  */
@@ -45,13 +50,13 @@ tvdb_time_t *tvdb_alloc_time();
 typedef struct tvdb_series {
    int   id;
    int   series_id;
-   char  lang[16];
-   char  name[128];
-   char  banner[128];
-   char  overview[2048];
-   char  first_aired[16];
-   char  imdb_id[16];
-   char  zap2it_id[16];
+   char  lang[TVDB_TNY_STR_SZ + 1];
+   char  name[TVDB_SML_STR_SZ + 1];
+   char  banner[TVDB_SML_STR_SZ + 1];
+   char  overview[TVDB_LRG_STR_SZ + 1];
+   char  first_aired[TVDB_TNY_STR_SZ + 1];
+   char  imdb_id[TVDB_TNY_STR_SZ + 1];
+   char  zap2it_id[TVDB_TNY_STR_SZ + 1];
 } tvdb_series_t;
 
 /** \brief Allocates a series struct and zeros it

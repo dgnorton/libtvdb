@@ -15,7 +15,8 @@ typedef struct tvdb_context {
    CURL *curl;
 } tvdb_context_t;
 
-typedef char URL[1024];
+#define URL_SZ 1024
+typedef char URL[URL_SZ + 1];
 
 TVDB_API htvdb_t tvdb_init(const char* key) {
    tvdb_context_t *tvdb;

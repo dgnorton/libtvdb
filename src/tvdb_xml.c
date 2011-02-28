@@ -44,7 +44,7 @@ TVDB_API int tvdb_parse_mirrors(const tvdb_buffer_t *xml, const char *url, tvdb_
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"mirrorpath")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(mirror->path, tmp);
+                        strncpy(mirror->path, tmp, TVDB_MED_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
@@ -148,43 +148,43 @@ TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_l
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"language")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->lang, tmp);
+                        strncpy(s->lang, tmp, TVDB_TNY_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"SeriesName")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->name, tmp);
+                        strncpy(s->name, tmp, TVDB_SML_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"banner")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->banner, tmp);
+                        strncpy(s->banner, tmp, TVDB_SML_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"Overview")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->overview, tmp);
+                        strncpy(s->overview, tmp, TVDB_LRG_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"FirstAired")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->first_aired, tmp);
+                        strncpy(s->first_aired, tmp, TVDB_TNY_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"IMDB_ID")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->imdb_id, tmp);
+                        strncpy(s->imdb_id, tmp, TVDB_TNY_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
                   else if (!xmlStrcmp(elem->name, (const xmlChar *)"zap2it_id")) {
                      if ((tmp = xmlNodeGetContent(elem))) {
-                        strcpy(s->zap2it_id, tmp);
+                        strncpy(s->zap2it_id, tmp, TVDB_TNY_STR_SZ);
                         xmlFree(tmp);
                      }
                   }
