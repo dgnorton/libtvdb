@@ -18,7 +18,14 @@ TVDB_API int tvdb_parse_mirrors(const tvdb_buffer_t *xml, const char *url, tvdb_
    result = TVDB_E_PARSE_MIRRORS_XML;
 
    doc = xmlReadMemory(xml->memory, xml->size, url, 0, 0);
+
+   if (!doc)
+      return TVDB_E_XML_DOC;
+
    node = xmlDocGetRootElement(doc);
+   
+   if (!node)
+      return TVDB_E_XML_NODE;
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Mirrors")) {
       /* iterate Mirror nodes */
@@ -70,7 +77,14 @@ TVDB_API int tvdb_parse_time(const tvdb_buffer_t *xml, const char *url, tvdb_tim
    result = TVDB_E_PARSE_TIME_XML;
 
    doc = xmlReadMemory(xml->memory, xml->size, url, 0, 0);
+
+   if (!doc)
+      return TVDB_E_XML_DOC;
+
    node = xmlDocGetRootElement(doc);
+
+   if (!node)
+      return TVDB_E_XML_NODE;
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Items")) {
       elem = node->children;
@@ -102,7 +116,14 @@ TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_l
    result = TVDB_E_PARSE_SERIES_XML;
 
    doc = xmlReadMemory(xml->memory, xml->size, url, 0, 0);
+
+   if (!doc)
+      return TVDB_E_XML_DOC;
+
    node = xmlDocGetRootElement(doc);
+
+   if (!node)
+      return TVDB_E_XML_NODE;
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Data")) {
       /* iterate Series nodes */

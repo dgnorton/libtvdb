@@ -221,6 +221,8 @@ TVDB_API int tvdb_series_info(htvdb_t htvdb, const char *mirror, int series_id, 
 
 TVDB_API const char* tvdb_error_text(int err) {
    switch (err) {
+      case TVDB_OK:
+         return "TVDB_OK";
       case TVDB_E_ERROR:
          return "TVDB_E_ERROR";
       case TVDB_E_MEMORY:
@@ -243,6 +245,10 @@ TVDB_API const char* tvdb_error_text(int err) {
          return "TVDB_E_PARSE_TIME_XML";
       case TVDB_E_PARSE_SERIES_XML:
          return "TVDB_E_PARSE_SERIES_XML";
+      case TVDB_E_XML_DOC:
+         return "TVDB_E_XML_DOC";
+      case TVDB_E_XML_NODE:
+         return "TVDB_E_XML_NODE";
       default:
          break;
    }
