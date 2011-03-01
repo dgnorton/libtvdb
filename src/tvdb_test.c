@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include "tvdb.h"
 
-/* Change <MY_API_KEY> to the key provided to you by TVDB.com */
-#define MY_API_KEY "<MY_API_KEY>"
+/* You must copy tvdb_key_template.h to tvdb_key.h and edit */
+/* See instructions in tvdb_key_template.h.                 */
+#include "tvdb_key.h"
 
 void print_mirrors(const tvdb_list_node_t *mirrors) {
    const tvdb_list_node_t *n;

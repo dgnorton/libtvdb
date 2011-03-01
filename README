@@ -17,6 +17,8 @@ Goals:
   
 Build:
 
+Follow the instructions in tvdb_key_template.h.
+
 CMake 2.8 or higher is required as well as libCURL and libxml2.
 
 tvdb builds as a static lib by default but can be built as a shared lib (.so or .dll, for example) by running CMake with the following option...
