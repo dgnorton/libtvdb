@@ -17,7 +17,7 @@ Goals:
   
 Build:
 
-Follow the instructions in tvdb_key_template.h.
+*** NOTE: after running CMake, edit libtvdb/src/tvdb_key.h to include *your* TVDB API key.
 
 CMake 2.8 or higher is required as well as libCURL and libxml2.
 

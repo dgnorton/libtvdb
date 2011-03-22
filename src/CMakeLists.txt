@@ -57,5 +57,7 @@ target_link_libraries(tvdb
    
 target_link_libraries(tvdb_test tvdb)
 
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/tvdb_key_template.h ${CMAKE_CURRENT_SOURCE_DIR}/tvdb_key.h COPYONLY)
+
 #copy default config file
 #file(COPY "pcproxd.cfg" DESTINATION .)
