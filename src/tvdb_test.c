@@ -37,6 +37,20 @@ void print_series(const tvdb_list_node_t *series) {
    }
 }
 
+void print_banners(const tvdb_list_node_t *banners) {
+   const tvdb_list_node_t *n;
+   tvdb_banner_t *b;
+
+   if (!banners)
+      return;
+
+   printf("\nBanners:\n");
+
+   for (n = banners; n; n = n->next) {
+      b = (tvdb_banner_t *)n->data;
+      printf("  id [%i], path [%s], type [%s]\n", b->id, b->path, b->type);
+   }
+}
 void show_result(const char *function, int result) {
    printf("[%-25s]  %s\n", tvdb_error_text(result), function);
 }
@@ -52,6 +66,8 @@ int main() {
 
    tvdb_list_node_t *series;
    tvdb_buffer_t *series_xml;
+
+   tvdb_list_node_t *banners;
 
    /* init libtvdb and get a handle */
    htvdb_t tvdb = tvdb_init(MY_API_KEY);
@@ -91,6 +107,16 @@ int main() {
       result = tvdb_series_info(tvdb, ((tvdb_mirror_t*)mirrors->data)->path, ((tvdb_series_t*)series->data)->id, "en", "series_info.zip");
       show_result("tvdb_series_info", result);
    }
+
+   /* Temporary hack of a test for banner xml parsing.                       */
+   /* Requires that the zip file from the previous test be manually unzipped */
+   /* and banners.xml be copied to the build folder.                         */
+   /* The whole test has to be run twice to make this work.                  */
+   banners = 0;
+   result = tvdb_parse_banners("banners.xml", &banners);
+   show_result("tvdb_parse_banners", result);
+   if (banners)
+      print_banners(banners);
 
    if (tvdb > 0)
       tvdb_uninit(tvdb);

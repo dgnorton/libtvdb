@@ -12,6 +12,7 @@ extern "C" {
 TVDB_API int tvdb_parse_mirrors(const tvdb_buffer_t *xml, const char *url, tvdb_list_node_t **mirrors);
 TVDB_API int tvdb_parse_time(const tvdb_buffer_t *xml, const char *url, tvdb_time_t *server_time);
 TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_list_node_t **series);
+TVDB_API int tvdb_parse_banners(const char *file, tvdb_list_node_t **banners);
 
 #ifdef __cplusplus
 }

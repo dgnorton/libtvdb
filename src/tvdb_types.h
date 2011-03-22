@@ -63,4 +63,18 @@ typedef struct tvdb_series {
  */
 tvdb_series_t *tvdb_alloc_series();
 
+typedef struct tvdb_banner {
+   int id;
+   char path[TVDB_MED_STR_SZ + 1];
+   char type[TVDB_TNY_STR_SZ + 1];
+   char type2[TVDB_TNY_STR_SZ + 1];
+   char lang[TVDB_TNY_STR_SZ + 1];
+   char rating[TVDB_TNY_STR_SZ + 1];
+   int ratingCnt;
+} tvdb_banner_t;
+
+/** \brief Allocates a banner struct and zeros it
+ */
+tvdb_banner_t *tvdb_alloc_banner();
+
 #endif /* TVDB_TYPES_H_INCLUDED */

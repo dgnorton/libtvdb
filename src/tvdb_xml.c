@@ -201,6 +201,86 @@ TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_l
    return result;
 }
 
+TVDB_API int tvdb_parse_banners(const char *file, tvdb_list_node_t **banners) {
+   xmlDocPtr doc;
+   xmlNode *node, *elem;
+   tvdb_banner_t *banner;
+   char *tmp;
+   int result;
+
+   result = TVDB_E_PARSE_MIRRORS_XML;
+
+   doc = xmlReadFile(file, NULL, 0);
+
+   if (!doc)
+      return TVDB_E_XML_DOC;
+
+   node = xmlDocGetRootElement(doc);
+   
+   if (!node)
+      return TVDB_E_XML_NODE;
+
+   if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Banners")) {
+      /* iterate Banner nodes */
+      for (node = node->children; node; node = node->next) {
+         if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Banner")) {
+            banner = tvdb_alloc_banner();
+
+            /* iterate child elements of each Banner node */
+            for (elem = node->children; elem; elem = elem->next) {
+               if (elem->type == XML_ELEMENT_NODE) {
+                  if (!xmlStrcmp(elem->name, (const xmlChar *)"id")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        banner->id = atoi(tmp);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"BannerPath")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        strncpy(banner->path, tmp, TVDB_MED_STR_SZ);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"BannerType")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        strncpy(banner->type, tmp, TVDB_TNY_STR_SZ);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"BannerType2")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        strncpy(banner->type2, tmp, TVDB_TNY_STR_SZ);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"Language")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        strncpy(banner->lang, tmp, TVDB_TNY_STR_SZ);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"Rating")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        strncpy(banner->rating, tmp, TVDB_TNY_STR_SZ);
+                        xmlFree(tmp);
+                     }
+                  }
+                  else if (!xmlStrcmp(elem->name, (const xmlChar *)"RatingCount")) {
+                     if ((tmp = xmlNodeGetContent(elem))) {
+                        banner->ratingCnt = atoi(tmp);
+                        xmlFree(tmp);
+                     }
+                  }
+               }
+            }
+            tvdb_list_add(banners, banner, sizeof(banner));
+         }
+      }
+   result = TVDB_OK;
+   }
+   return result;
+}
+
 #ifdef __cplusplus
 }
 #endif

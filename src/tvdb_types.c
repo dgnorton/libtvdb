@@ -26,3 +26,9 @@ void tvdb_free_buffer(tvdb_buffer_t *buf) {
    free(buf->memory);
    free(buf);
 }
+
+tvdb_banner_t *tvdb_alloc_banner() {
+   tvdb_banner_t *banner;
+   banner = (tvdb_banner_t *)calloc(sizeof(tvdb_banner_t), 1);
+   return banner;
+}

@@ -220,6 +220,10 @@ TVDB_API int tvdb_series_info(htvdb_t htvdb, const char *mirror, int series_id, 
    return result;
 }
 
+TVDB_API int tvdb_banner(htvdb_t htvdb, const char *path, const char *outfile) {
+
+}
+
 TVDB_API const char* tvdb_error_text(int err) {
    switch (err) {
       case TVDB_OK:
