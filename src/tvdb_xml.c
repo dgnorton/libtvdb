@@ -24,8 +24,10 @@ TVDB_API int tvdb_parse_mirrors(const tvdb_buffer_t *xml, const char *url, tvdb_
 
    node = xmlDocGetRootElement(doc);
    
-   if (!node)
+   if (!node) {
+      xmlFreeDoc(doc);
       return TVDB_E_XML_NODE;
+   }
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Mirrors")) {
       /* iterate Mirror nodes */
@@ -64,6 +66,8 @@ TVDB_API int tvdb_parse_mirrors(const tvdb_buffer_t *xml, const char *url, tvdb_
       result = TVDB_OK;
    }
 
+   xmlFreeDoc(doc);
+
    return result;
 }
 
@@ -83,8 +87,10 @@ TVDB_API int tvdb_parse_time(const tvdb_buffer_t *xml, const char *url, tvdb_tim
 
    node = xmlDocGetRootElement(doc);
 
-   if (!node)
+   if (!node) {
+      xmlFreeDoc(doc);
       return TVDB_E_XML_NODE;
+   }
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Items")) {
       elem = node->children;
@@ -102,6 +108,8 @@ TVDB_API int tvdb_parse_time(const tvdb_buffer_t *xml, const char *url, tvdb_tim
          }
       }
    }
+
+   xmlFreeDoc(doc);
 
    return result;
 }
@@ -122,8 +130,10 @@ TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_l
 
    node = xmlDocGetRootElement(doc);
 
-   if (!node)
+   if (!node) {
+      xmlFreeDoc(doc);
       return TVDB_E_XML_NODE;
+   }
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Data")) {
       /* iterate Series nodes */
@@ -198,6 +208,8 @@ TVDB_API int tvdb_parse_series(const tvdb_buffer_t *xml, const char *url, tvdb_l
       result = TVDB_OK;
    }
 
+   xmlFreeDoc(doc);
+
    return result;
 }
 
@@ -217,8 +229,10 @@ TVDB_API int tvdb_parse_banners(const char *file, tvdb_list_node_t **banners) {
 
    node = xmlDocGetRootElement(doc);
    
-   if (!node)
+   if (!node) {
+      xmlFreeDoc(doc);
       return TVDB_E_XML_NODE;
+   }
 
    if (node->type == XML_ELEMENT_NODE && !xmlStrcmp(node->name, (const xmlChar *)"Banners")) {
       /* iterate Banner nodes */
@@ -278,6 +292,9 @@ TVDB_API int tvdb_parse_banners(const char *file, tvdb_list_node_t **banners) {
       }
    result = TVDB_OK;
    }
+
+   xmlFreeDoc(doc);
+
    return result;
 }
 

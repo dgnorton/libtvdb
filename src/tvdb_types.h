@@ -43,7 +43,7 @@ typedef char tvdb_time_t[TVDB_TNY_STR_SZ + 1];
 
 /** \brief Allocates a tvdb_time_t struct and zeros it
  */
-tvdb_time_t *tvdb_alloc_time();
+//tvdb_time_t *tvdb_alloc_time();
 
 /** \brief Data for one series
  */

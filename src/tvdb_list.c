@@ -54,5 +54,13 @@ TVDB_API tvdb_list_node_t *tvdb_list_new() {
 }
 
 TVDB_API void tvdb_list_free(tvdb_list_node_t *node) {
-   free(node);
+   tvdb_list_node_t *tmp;
+
+   while (node) {
+      tmp = node->next;
+      if (node->data)
+         free(node->data);
+      free(node);
+      node = tmp;
+   }
 }

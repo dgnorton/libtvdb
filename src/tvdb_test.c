@@ -88,8 +88,9 @@ int main() {
    show_result("tvdb_time", result);
    result = tvdb_parse_time(time_xml, 0, &time);
    show_result("tvdb_parse_time", result);
-   if (result == TVDB_OK)
+   if (result == TVDB_OK) {
       printf("\nServer Time [%s]\n", time);
+   }
    tvdb_free_buffer(time_xml);
 
    /* get series XML and parse it */
@@ -107,6 +108,12 @@ int main() {
       result = tvdb_series_info(tvdb, ((tvdb_mirror_t*)mirrors->data)->path, ((tvdb_series_t*)series->data)->id, "en", "series_info.zip");
       show_result("tvdb_series_info", result);
    }
+
+   if (mirrors)
+      tvdb_list_free(mirrors);
+
+   if (series)
+      tvdb_list_free(series);
 
    /* Temporary hack of a test for banner xml parsing.                       */
    /* Requires that the zip file from the previous test be manually unzipped */
