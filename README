@@ -1,8 +1,8 @@
 Description:
 
-  libtvdb may someday become a useable C library implementation of The TVDB.com API (http://thetvdb.com/wiki/index.php?title=Programmers_API).  Or, it may just be something I waste a few hours on and never make anything useful of!
+  libtvdb is a C library implementation of The TVDB.com API (http://thetvdb.com/wiki/index.php?title=Programmers_API).  It is still a work-in-progress.  
 
-  It's usually tested on Windows XP 32 bit and Ubuntu 32 & 64 bit but you may find it in a broken state at any given moment.  It's still in very early development.  If it's broken, try moving the HEAD back until you find a working commit to play with...or, help me fix what's broken.  :-)
+  It's usually tested on Windows XP 32 bit, Ubuntu 32 & 64 bit, and Mac OS X.  It should be reasonably portable to other OSes as well.  You may find it in a broken state at any given moment.  It's still in very early development.  If it's broken, try moving the HEAD back until you find a working commit to play with...or, help me fix what's broken.  :-)
 
   Currently, it should work well enough to retrieve mirrors, server time, and a list of series from a name (e.g., "xfiles" currently returns info on three xfiles related series).  The core libtvdb functions return just the raw XML string or save a zip file from TVDB.com.  You can either use your own XML parser or you can use libtvdb functions that parse the XML into libtvdb data structs (e.g., linked list, buffer, etc.).
 
